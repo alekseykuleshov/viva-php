@@ -12,7 +12,7 @@ abstract class Request implements \JsonSerializable {
 	/** @const string Url to required api */
 	const URL = '/api';
 
-	/** @var string Request method, can be overriden at child classes if required */
+	/** @var string Request method, can be overridden at child classes if required */
 	protected $method = 'POST';
 
 	/** @var string Merchant id, provided by wallet */
@@ -177,17 +177,22 @@ abstract class Request implements \JsonSerializable {
 	 */
 	public function send() {
 
+		$request = [
+			"auth" => [$this->getMerchantId(), $this->getApiKey()],
+			"timeout" => 60,
+			"connect_timeout" => 60,
+			"exceptions" => false
+		];
+
+		if ($this->method != 'DELETE') {
+			$request["json"] = $this;
+		}
+
 		$client = new \GuzzleHttp\Client();
 		$res = $client->request(
 			$this->method,
 			$this->getApiUrl(),
-			[
-				"auth" => [$this->getMerchantId(), $this->getApiKey()],
-				"json" => $this,
-				"timeout" => 60,
-				"connect_timeout" => 60,
-				"exceptions" => false
-			]
+			$request
 		);
 
 		$code = $res->getStatusCode();

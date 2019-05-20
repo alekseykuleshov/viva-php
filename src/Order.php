@@ -42,7 +42,7 @@ class Order extends Request {
 	/**
 	 * Sets maximum installments
 	 *
-	 * @param string $maxInstallments Maximum installments
+	 * @param int $maxInstallments Maximum installments
 	 *
 	 * @return \ATDev\Viva\Request
 	 */
@@ -56,7 +56,7 @@ class Order extends Request {
 	/**
 	 * Gets maximum installments
 	 *
-	 * @return string
+	 * @return int
 	 */
 	public function getInstallments() {
 
@@ -121,13 +121,13 @@ class Order extends Request {
 	public function jsonSerialize() {
 
 		$result = [
-			"Amount" => $this->amount,
-			"SourceCode" => $this->sourceCode,
-			"MaxInstallments" => $this->maxInstallments
+			"Amount" => $this->getAmount(),
+			"SourceCode" => $this->getSourceCode(),
+			"MaxInstallments" => $this->getInstallments()
 		];
 
 		if ($this->isPreAuth) {
-			$result["IsPreAuth"] = $this->isPreAuth;
+			$result["IsPreAuth"] = $this->getIsPreAuth();
 		}
 
 		return $result;

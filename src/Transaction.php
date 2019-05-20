@@ -66,7 +66,7 @@ abstract class Transaction extends Request {
 	/**
 	 * Sets maximum installments
 	 *
-	 * @param string $installments Maximum installments
+	 * @param int $installments Maximum installments
 	 *
 	 * @return \ATDev\Viva\Transaction
 	 */
@@ -80,7 +80,7 @@ abstract class Transaction extends Request {
 	/**
 	 * Gets maximum installments
 	 *
-	 * @return string
+	 * @return int
 	 */
 	public function getInstallments() {
 
@@ -142,11 +142,11 @@ abstract class Transaction extends Request {
 	public function jsonSerialize() {
 
 		$result = [
-			"Amount" => $this->amount,
-			"OrderCode" => $this->orderCode,
-			"SourceCode" => $this->sourceCode,
-			"CreditCard" => ["Token" => $this->cardToken],
-			"Installments" => $this->installments
+			"Amount" => $this->getAmount(),
+			"OrderCode" => $this->getOrderCode(),
+			"SourceCode" => $this->getSourceCode(),
+			"CreditCard" => ["Token" => $this->getCardToken()],
+			"Installments" => $this->getInstallments()
 		];
 
 		if (static::PAYMENT_METHOD_ID == 1) {
