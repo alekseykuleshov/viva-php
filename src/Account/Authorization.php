@@ -5,23 +5,19 @@
  */
 class Authorization {
 
+	use \ATDev\Viva\RequestTrait;
+
 	/** @const string Uri to required api */
 	const URI = '/connect/token';
 
-	/** @var string Client id, provided by wallet */
-	protected $clientId;
-	/** @var string Client secret, provided by wallet */
-	protected $clientSecret;
+	/** @const string Request method */
+	const METHOD = 'POST';
 
-	/** @var bool Test mode */
-	private $testMode = false;
-
-	/** @var string|null Error message, empty if no error, some text if any */
-	private $error;
-
-	/** @var string Request method */
-	private $method = 'POST';
-
+	/**
+	 * Gets access token
+	 *
+	 * @return null|string
+	 */
 	public function getAccessToken() {
 
 		$headers = [
@@ -40,7 +36,7 @@ class Authorization {
 
 		$client = new \GuzzleHttp\Client();
 		$res = $client->request(
-			$this->method,
+			static::METHOD,
 			$this->getApiUrl(),
 			$request
 		);
@@ -48,133 +44,37 @@ class Authorization {
 		$code = $res->getStatusCode();
 		$body = $res->getBody()->getContents();
 
-		if ( ( $code < 200 ) || ($code >= 300) ) {
+		if (($code < 200) || ($code >= 300)) {
 
-			$this->error = $body;
+			$this->setError($body);
 		} else {
 
-			$this->error = null;
+			$this->setError(null);
 		}
 
-		$result = json_decode($body); // handle non-parsable string 
+		$result = json_decode($body); // handle non-parsable string
 
-		if ( (isset($result->error) ) && ( ! empty(trim($result->error))) ) {
+		if ((isset($result->error)) && (!empty(trim($result->error))) ) {
 
-			$this->error = trim($result->error);
+			$this->setError($result->error);
 		}
 
-		if (!empty($this->error)) {
+		if (!empty($this->getError())) {
 
 			return null;
 		}
 
 		if (empty($result->access_token)) {
 
-			$this->error = "Access token is absent in response";
+			$this->setError("Access token is absent in response");
 		}
 
-		if (!empty($this->error)) {
+		if (!empty($this->getError())) {
 
 			return null;
 		}
 
 		return $result->access_token;
-	}
-
-	/**
-	 * Set client id
-	 *
-	 * @param string $clientId
-	 *
-	 * @return \ATDev\Viva\Transaction\Authorization
-	 */
-	public function setClientId($clientId) {
-
-		$this->clientId = $clientId;
-
-		return $this;
-	}
-
-	/**
-	 * Gets client id
-	 *
-	 * @return string
-	 */
-	public function getClientId() {
-
-		return $this->clientId;
-	}
-
-	/**
-	 * Set client secret
-	 *
-	 * @param string $clientSecret
-	 *
-	 * @return \ATDev\Viva\Transaction\Authorization
-	 */
-	public function setClientSecret($clientSecret) {
-
-		$this->clientSecret = $clientSecret;
-
-		return $this;
-	}
-
-	/**
-	 * Gets client secret
-	 *
-	 * @return string
-	 */
-	public function getClientSecret() {
-
-		return $this->clientSecret;
-	}
-
-	/**
-	 * Sets test mode
-	 *
-	 * @param bool $testMode
-	 *
-	 * @return \ATDev\Viva\Transaction\Authorization
-	 */
-	public function setTestMode($testMode) {
-
-		$this->testMode = $testMode;
-
-		return $this;
-	}
-
-	/**
-	 * Gets test mode
-	 *
-	 * @return bool
-	 */
-	public function getTestMode() {
-
-		return $this->testMode;
-	}
-
-	/**
-	 * Gets error
-	 *
-	 * @return string
-	 */
-	public function getError() {
-
-		return $this->error;
-	}
-
-	/**
-	 * Sets error
-	 *
-	 * @param string $error
-	 *
-	 * @return \ATDev\Viva\Transaction\Authorization
-	 */
-	private function setError($error) {
-
-		$this->error = $error;
-
-		return $this;
 	}
 
 	/**
@@ -184,7 +84,7 @@ class Authorization {
 	 */
 	private function getAuthToken() {
 
-		return base64_encode($this->clientId . ":" . $this->clientSecret);
+		return base64_encode($this->getClientId() . ":" . $this->getClientSecret());
 	}
 
 	/**
@@ -194,6 +94,6 @@ class Authorization {
 	 */
 	private function getApiUrl() {
 
-		return Url::getUrl($this->testMode) . self::URI;
+		return Url::getUrl($this->getTestMode()) . self::URI;
 	}
 }
