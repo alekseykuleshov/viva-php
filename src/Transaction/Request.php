@@ -163,6 +163,7 @@ abstract class Request implements \JsonSerializable {
 
 //stdClass Object ( [status] => 404 [message] => Could not get 'token:charge:ctok_qwTt9UxlrdqiI1t6tJhk3kZBPFEasd', key does not exist [eventId] => 2 )
 
+//stdClass Object ( [status] => 403 [message] => Preauth has expired or already captured [eventId] => 1 )
 	}
 
 	/**

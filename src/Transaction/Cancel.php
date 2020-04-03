@@ -1,17 +1,14 @@
-<?php namespace ATDev\Viva;
+<?php namespace ATDev\Viva\Transaction;
 
 /**
  * A class which creates cancel request
  */
 class Cancel extends Request {
 
-	/** @const string Url to required api */
-	const URL = '/transactions';
+	/** @const string Request method */
+	const METHOD = 'DELETE';
 
-	/** @var string Request method */
-	protected $method = 'DELETE';
-
-	/** @var transaction id to cancel */
+	/** @var string Transaction id to cancel */
 	protected $transactionId;
 
 	/**
@@ -19,7 +16,7 @@ class Cancel extends Request {
 	 *
 	 * @param string $transactionId Transaction id to cancel
 	 *
-	 * @return \ATDev\Viva\Cancel
+	 * @return \ATDev\Viva\Transaction\Cancel
 	 */
 	public function setTransactionId($transactionId) {
 
@@ -49,7 +46,19 @@ class Cancel extends Request {
 
 		$url = $url . "/" . $this->getTransactionId();
 
-		$url = $url . "?amount=" . $this->getAmount();
+		$get = [];
+
+		if (!empty($this->getAmount())) {
+			$get[] = "amount=" . $this->getAmount();
+		}
+
+		if (!empty($this->getSourceCode())) {
+			$get[] = "sourceCode=" . $this->getSourceCode();
+		}
+
+		if (!empty($get)) {
+			$url = $url . "?" . implode("&", $get);
+		}
 
 		return $url;
 	}
