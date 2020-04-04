@@ -1,24 +1,22 @@
-<?php namespace ATDev\Viva;
+<?php namespace ATDev\Viva\Transaction;
 
 /**
  * A class which creates capture request
  */
 class Capture extends Request {
 
-	/** @const string Url to required api */
-	const URL = '/transactions';
+	/** @const string Request method */
+	const METHOD = 'POST';
 
-	/** @var transaction id to capture */
-	protected $transactionId;
-	/** @var maximum installments */
-	protected $installments = 0;
+	/** @var string Transaction id to capture */
+	private $transactionId;
 
 	/**
 	 * Sets transaction id to capture
 	 *
 	 * @param string $transactionId Transaction id to capture
 	 *
-	 * @return \ATDev\Viva\Capture
+	 * @return \ATDev\Viva\Transaction\Capture
 	 */
 	public function setTransactionId($transactionId) {
 
@@ -35,30 +33,6 @@ class Capture extends Request {
 	public function getTransactionId() {
 
 		return $this->transactionId;
-	}
-
-	/**
-	 * Sets maximum installments
-	 *
-	 * @param string $installments Maximum installments
-	 *
-	 * @return \ATDev\Viva\Capture
-	 */
-	public function setInstallments($installments) {
-
-		$this->installments = $installments;
-
-		return $this;
-	}
-
-	/**
-	 * Gets maximum installments
-	 *
-	 * @return string
-	 */
-	public function getInstallments() {
-
-		return $this->installments;
 	}
 
 	/**
@@ -83,8 +57,7 @@ class Capture extends Request {
 	public function jsonSerialize() {
 
 		$result = [
-			"Amount" => $this->amount,
-			"Installments" => $this->installments
+			"amount" => $this->getAmount()
 		];
 
 		return $result;

@@ -1,6 +1,6 @@
-# Viva Wallet Native Checkout REST API PHP SDK
+# Viva Wallet Native Checkout V2 API PHP Wrapper Library
 
-This is SDK for Native Checkout REST API of Viva Wallet.
+This is a wrapper for Native Checkout V2 API of Viva Wallet.
 Only 4 credit card transaction types are supported now: (Charge, Auth, Capture, Cancel).
 
 ## How to use
@@ -10,7 +10,7 @@ This sdk is installed via [Composer](http://getcomposer.org/). To install, simpl
 ```json
 {
     "require": {
-        "atdev/viva-php": "0.1.0"
+        "atdev/viva-php": "0.2.0"
     }
 }
 ```
@@ -22,16 +22,46 @@ And run composer to update your dependencies:
 
 Then, import the `autoload.php` from your `vendor` folder.
 
-## Sample calls
+## Prerequisites
+
+Complete prerequisite steps from https://developer.vivawallet.com/online-checkouts/native-checkout-v2/ and obtain your `Client ID` and `Client Secret`.
+You'll need to set up a payment source with Native Checkout V2  as the integration method and get a `Source Code`.
+
+## Get card charge token
+
+Create payment form and `Charge Token` at front end as described here: https://developer.vivawallet.com/online-checkouts/native-checkout-v2/
+You'll need to have `Access Token` and `Base URL` at front end and you can get them as follows:
+
+```php
+$baseUrl = \ATDev\Viva\Transaction\Url::getUrl("[Test Mode]"); // Test mode, default is false
+
+$accessToken = (new \ATDev\Viva\Transaction\Authorization())
+	->setClientId("[Client ID]") // Client ID, Provided by wallet
+	->setClientSecret("[Client Secret]") // Client Secret, Provided by wallet
+	->setTestMode("[Test Mode]") // Test mode, default is false, can be skipped
+	->getAccessToken();
+```
+
+Now, when you have `Charge Token` you can make actual transactions.
+
+## Transactions
 
 ### CHARGE
 
 ```php
-$transaction = (new \ATDev\Viva\Charge("MERCHANT_ID")) // Provided by wallet
-	->setApiKey("API_KEY") // Provided by wallet
-	->setSourceCode("SOURCE_CODE") // Provided by wallet
-	->setAmount("AMOUNT") // The amount requested in cents
-	->setCardToken("CARD_TOKEN"); // Card token received from wallet, see https://developer.vivawallet.com/online-checkouts/native-checkout-v1/
+$customer = (new \ATDev\Viva\Transaction\Customer())
+	->setEmail("[Customer Email]")
+	->setPhone("[Customer Phone]")
+	->setFullName("[Customer Full Name]");
+
+$transaction = (new ATDev\Viva\Transaction\Charge())
+	->setClientId("[Client ID]") // Client ID, Provided by wallet
+	->setClientSecret("[Client Secret]") // Client Secret, Provided by wallet
+	->setTestMode("[Test Mode]") // Test mode, default is false, can be skipped
+	->setSourceCode("[Source Code]") // Source code, provided by wallet
+	->setAmount(["Amount"]) // The amount to charge in currency's smallest denomination (e.g amount in pounds x 100)
+	->setChargeToken(["Charge Token"]) // Charge token obtained at front end
+	->setCustomer($customer);
 
 $result = $transaction->send();
 
@@ -39,22 +69,30 @@ if (!empty($transaction->getError())) {
 
 	// Log the error message
 	// $error = $transaction->getError();
+
 } else {
 
-	// Save order id and transaction id
-	// $orderId = $transaction->getOrderCode();
-	// $transactionId = $result->TransactionId;
+	// Save transaction id
+	// $transactionId = $result->transactionId;
 }
 ```
 
 ### AUTHORIZATION
 
 ```php
-$transaction = (new \ATDev\Viva\Authorization("MERCHANT_ID")) // Provided by wallet
-	->setApiKey("API_KEY") // Provided by wallet
-	->setSourceCode("SOURCE_CODE") // Provided by wallet
-	->setAmount("AMOUNT") // The amount requested in cents
-	->setCardToken("CARD_TOKEN"); // Card token received from wallet, see https://developer.vivawallet.com/online-checkouts/native-checkout-v1/
+$customer = (new \ATDev\Viva\Transaction\Customer())
+	->setEmail("[Customer Email]")
+	->setPhone("[Customer Phone]")
+	->setFullName("[Customer Full Name]");
+
+$transaction = (new ATDev\Viva\Transaction\Authorization())
+	->setClientId("[Client ID]") // Client ID, Provided by wallet
+	->setClientSecret("[Client Secret]") // Client Secret, Provided by wallet
+	->setTestMode("[Test Mode]") // Test mode, default is false, can be skipped
+	->setSourceCode("[Source Code]") // Source code, provided by wallet
+	->setAmount(["Amount"]) // The amount to pre-auth in currency's smallest denomination (e.g amount in pounds x 100)
+	->setChargeToken(["Charge Token"]) // Charge token obtained at front end
+	->setCustomer($customer);
 
 $result = $transaction->send();
 
@@ -62,11 +100,11 @@ if (!empty($transaction->getError())) {
 
 	// Log the error message
 	// $error = $transaction->getError();
+
 } else {
 
-	// Save order id and transaction id
-	// $orderId = $transaction->getOrderCode();
-	// $transactionId = $result->TransactionId;
+	// Save transaction id
+	// $transactionId = $result->transactionId;
 }
 ```
 
@@ -75,10 +113,12 @@ if (!empty($transaction->getError())) {
 Make sure you have recurring payments enabled in your account.
 
 ```php
-$transaction = (new \ATDev\Viva\Capture("MERCHANT_ID")) // Provided by wallet
-	->setApiKey("API_KEY") // Provided by wallet
-	->setTransactionId("TRANSACTION_ID") // Transaction id obtained from authorization transaction
-	->setAmount("AMOUNT"); // The amount to capture in cents
+$transaction = (new \ATDev\Viva\Transaction\Capture())
+	->setClientId("[Client ID]") // Client ID, Provided by wallet
+	->setClientSecret("[Client Secret]") // Client Secret, Provided by wallet
+	->setTestMode("[Test Mode]") // Test mode, default is false, can be skipped
+	->setTransactionId(["Transaction ID"]) // Transaction id of authorization transaction
+	->setAmount(["Amount"]); // The amount to capture in currency's smallest denomination (e.g amount in pounds x 100)
 
 $result = $transaction->send();
 
@@ -89,7 +129,7 @@ if (!empty($transaction->getError())) {
 } else {
 
 	// Save transaction id
-	// $transactionId = $result->TransactionId;
+	// $transactionId = $result->transactionId;
 }
 ```
 
@@ -98,10 +138,13 @@ if (!empty($transaction->getError())) {
 Make sure you have refunds enabled in your account.
 
 ```php
-$transaction = (new \ATDev\Viva\Cancel("MERCHANT_ID")) // Provided by wallet
-	->setApiKey("API_KEY") // Provided by wallet
-	->setTransactionId("TRANSACTION_ID") // Transaction id obtained from charge, authorization, capture transactions
-	->setAmount("AMOUNT"); // The amount to capture in cents
+$transaction = (new \ATDev\Viva\Transaction\Cancel())
+	->setClientId("[Client ID]") // Client ID, Provided by wallet
+	->setClientSecret("[Client Secret]") // Client Secret, Provided by wallet
+	->setTestMode("[Test Mode]") // Test mode, default is false, can be skipped
+	->setSourceCode("[Source Code]") // Source code, provided by wallet
+	->setTransactionId(["Transaction ID"]) // Transaction id of charge, authorization or capture transaction
+	->setAmount(["Amount"]); // The amount to refund in currency's smallest denomination (e.g amount in pounds x 100)
 
 $result = $transaction->send();
 
@@ -109,17 +152,9 @@ if (!empty($transaction->getError())) {
 
 	// Log the error message
 	// $error = $transaction->getError();
+} else {
+
+	// Save transaction id
+	// $transactionId = $result->transactionId;
 }
 ```
-
-## Test mode
-
-Just call `setTestMode(true)` method before calling `send()` for any transaction.
-
-## Installments
-
-Just call `setInstallments(INSTALLMENTS_NUMBER)` method before calling `send()` for charge, authorization, capture transactions.
-
-## Order
-
-Charge and authorization transaction will create order for you automatically, but of you already have order id you can set it by calling `setOrderCode("ORDER_CODE")` method before calling `send()`.
