@@ -1,7 +1,7 @@
 {
     "name": "atdev/viva-php",
-    "description": "Viva Wallet Native Checkout REST API PHP SDK",
-    "keywords": ["viva", "wallet", "native", "checkout"],
+    "description": "Viva Wallet Native Checkout V2 API PHP Wrapper Library",
+    "keywords": ["viva", "wallet", "native", "checkout", "V2", "Api"],
     "homepage": "https://github.com/alekseykuleshov/viva-php",
     "license": "MIT",
     "autoload": {
