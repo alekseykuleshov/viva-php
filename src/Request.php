@@ -3,7 +3,7 @@
 /**
  * Basic functionality to set/get data to make a requests
  */
-trait RequestTrait {
+trait Request {
 
 	/** @var string Client id, provided by wallet */
 	private $clientId;

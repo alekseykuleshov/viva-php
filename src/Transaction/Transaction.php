@@ -101,7 +101,7 @@ abstract class Transaction extends Request {
 	/**
 	 * Sets merchant transaction reference
 	 *
-	 * @param string $merchantTrns Maximum installments
+	 * @param string $merchantTrns Merchant transaction reference
 	 *
 	 * @return \ATDev\Viva\Transaction\Transaction
 	 */

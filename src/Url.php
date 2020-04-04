@@ -3,7 +3,7 @@
 /**
  * An url enumeration class
  */
-abstract class UrlAbstract {
+abstract class Url {
 
 	/** @const Live api url */
 	const LIVE_URL = '';

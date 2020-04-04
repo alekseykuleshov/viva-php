@@ -5,7 +5,7 @@
  */
 class Authorization {
 
-	use \ATDev\Viva\RequestTrait;
+	use \ATDev\Viva\Request;
 
 	/** @const string Uri to required api */
 	const URI = '/connect/token';
@@ -44,19 +44,19 @@ class Authorization {
 		$code = $res->getStatusCode();
 		$body = $res->getBody()->getContents();
 
+		$result = @json_decode($body);
+
 		if (($code < 200) || ($code >= 300)) {
 
 			$this->setError($body);
+
+			if ((isset($result->error)) && (!empty(trim($result->error))) ) {
+
+				$this->setError($result->error);
+			}
 		} else {
 
 			$this->setError(null);
-		}
-
-		$result = json_decode($body); // handle non-parsable string
-
-		if ((isset($result->error)) && (!empty(trim($result->error))) ) {
-
-			$this->setError($result->error);
 		}
 
 		if (!empty($this->getError())) {

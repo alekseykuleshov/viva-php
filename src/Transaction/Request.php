@@ -7,7 +7,7 @@ use \ATDev\Viva\Account\Authorization as AccountAuthorization;
  */
 abstract class Request implements \JsonSerializable {
 
-	use \ATDev\Viva\RequestTrait;
+	use \ATDev\Viva\Request;
 
 	const URI = '/nativecheckout/v2/transactions';
 
@@ -137,19 +137,19 @@ abstract class Request implements \JsonSerializable {
 		$code = $res->getStatusCode();
 		$body = $res->getBody()->getContents();
 
+		$result = @json_decode($body);
+
 		if (($code < 200) || ($code >= 300)) {
 
 			$this->setError($body);
+
+			if ((isset($result->message)) && (!empty(trim($result->message))) ) {
+
+				$this->setError($result->message);
+			}
 		} else {
 
 			$this->setError(null);
-		}
-
-		$result = json_decode($body); // handle non-parsable string
-
-		if ((isset($result->error)) && (!empty(trim($result->error))) ) {
-
-			$this->setError($result->error);
 		}
 
 		if (!empty($this->getError())) {
@@ -158,12 +158,6 @@ abstract class Request implements \JsonSerializable {
 		}
 
 		return $result;
-
-//stdClass Object ( [transactionId] => 2fbead75-fce4-40d6-8ae9-1cb41ef6c527 )
-
-//stdClass Object ( [status] => 404 [message] => Could not get 'token:charge:ctok_qwTt9UxlrdqiI1t6tJhk3kZBPFEasd', key does not exist [eventId] => 2 )
-
-//stdClass Object ( [status] => 403 [message] => Preauth has expired or already captured [eventId] => 1 )
 	}
 
 	/**

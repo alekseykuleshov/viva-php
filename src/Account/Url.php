@@ -1,11 +1,11 @@
 <?php namespace ATDev\Viva\Account;
 
-use \ATDev\Viva\UrlAbstract;
+use \ATDev\Viva\Url as BaseUrl;
 
 /**
  * An url enumeration class
  */
-class Url extends UrlAbstract {
+class Url extends BaseUrl {
 
 	/** @const Live api url */
 	const LIVE_URL = 'https://accounts.vivapayments.com';
