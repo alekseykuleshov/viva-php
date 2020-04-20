@@ -1,5 +1,8 @@
 <?php namespace ATDev\Viva\Transaction;
 
+use \Egulias\EmailValidator\EmailValidator;
+use \Egulias\EmailValidator\Validation\RFCValidation;
+
 /**
  * An class which represents customer
  */
@@ -28,6 +31,12 @@ class Customer implements \JsonSerializable {
 	 * @return \ATDev\Viva\Transaction\Customer
 	 */
 	public function setEmail($email) {
+
+		$validator = new EmailValidator();
+		if (!$validator->isValid($email, new RFCValidation())) {
+
+			throw new Exception();
+		}
 
 		$this->email = $email;
 

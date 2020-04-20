@@ -8,10 +8,10 @@ class Authorization {
 	use \ATDev\Viva\Request;
 
 	/** @const string Uri to required api */
-	const URI = '/connect/token';
+	const URI = "/connect/token";
 
 	/** @const string Request method */
-	const METHOD = 'POST';
+	const METHOD = "POST";
 
 	/**
 	 * Gets access token

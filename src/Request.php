@@ -22,9 +22,14 @@ trait Request {
 	 *
 	 * @param string $clientId
 	 *
-	 * @return \ATDev\Viva\Transaction\Authorization
+	 * @return \ATDev\Viva\Request
 	 */
 	public function setClientId($clientId) {
+
+		if (!is_string($clientId)) {
+
+			return false;
+		}
 
 		$this->clientId = $clientId;
 
@@ -46,9 +51,14 @@ trait Request {
 	 *
 	 * @param string $clientSecret
 	 *
-	 * @return \ATDev\Viva\Transaction\Authorization
+	 * @return \ATDev\Viva\Request
 	 */
 	public function setClientSecret($clientSecret) {
+
+		if (!is_string($clientSecret)) {
+
+			return false;
+		}
 
 		$this->clientSecret = $clientSecret;
 
@@ -70,9 +80,14 @@ trait Request {
 	 *
 	 * @param bool $testMode
 	 *
-	 * @return \ATDev\Viva\Transaction\Authorization
+	 * @return \ATDev\Viva\Request
 	 */
 	public function setTestMode($testMode) {
+
+		if (!is_bool($testMode)) {
+
+			return false;
+		}
 
 		$this->testMode = $testMode;
 
@@ -104,7 +119,7 @@ trait Request {
 	 *
 	 * @param string $error
 	 *
-	 * @return \ATDev\Viva\Transaction\Authorization
+	 * @return \ATDev\Viva\Request
 	 */
 	private function setError($error) {
 

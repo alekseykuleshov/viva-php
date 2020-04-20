@@ -9,10 +9,10 @@ abstract class Request implements \JsonSerializable {
 
 	use \ATDev\Viva\Request;
 
-	const URI = '/nativecheckout/v2/transactions';
+	const URI = "/nativecheckout/v2/transactions";
 
 	/** @const string Request method, should be overridden in child classes */
-	const METHOD = '';
+	const METHOD = "";
 
 	/** @var string Source code, provided by wallet */
 	private $sourceCode;

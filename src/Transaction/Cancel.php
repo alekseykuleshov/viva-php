@@ -6,7 +6,7 @@
 class Cancel extends Request {
 
 	/** @const string Request method */
-	const METHOD = 'DELETE';
+	const METHOD = "DELETE";
 
 	/** @var string Transaction id to cancel */
 	protected $transactionId;

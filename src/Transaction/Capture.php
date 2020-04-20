@@ -6,7 +6,7 @@
 class Capture extends Request {
 
 	/** @const string Request method */
-	const METHOD = 'POST';
+	const METHOD = "POST";
 
 	/** @var string Transaction id to capture */
 	private $transactionId;

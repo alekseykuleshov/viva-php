@@ -9,7 +9,7 @@ abstract class Transaction extends Request {
 	const PRE_AUTH = null;
 
 	/** @const string Request method */
-	const METHOD = 'POST';
+	const METHOD = "POST";
 
 	/** @var \ATDev\Viva\Transaction\Customer Customer data */
 	private $customer;
