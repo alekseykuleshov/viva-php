@@ -4,9 +4,6 @@
     "keywords": ["viva", "wallet", "native", "checkout", "V2", "Api"],
     "homepage": "https://github.com/alekseykuleshov/viva-php",
     "license": "MIT",
-    "autoload": {
-        "classmap": ["src/"]
-    },
     "minimum-stability": "stable",
     "require": {
         "guzzlehttp/guzzle": "~6.0",
@@ -15,5 +12,11 @@
     "require-dev": {
         "phpunit/phpunit": "~9.0",
 		"codeception/aspect-mock": "~3.0"
+    },
+    "autoload": {
+        "classmap": ["src/"]
+    },
+    "autoload-dev": {
+		"classmap": ["tests/"]
     }
 }
