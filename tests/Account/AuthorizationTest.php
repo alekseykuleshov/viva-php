@@ -22,9 +22,9 @@ class AuthorizationTest extends TestCase {
 		return $result;
 	}
 
-    /**
-     * @depends testClientId
-     */
+	/**
+	 * @depends testClientId
+	 */
 	public function testClientSecret($auth) {
 
 		$result = $auth->setClientSecret(123);
@@ -37,9 +37,9 @@ class AuthorizationTest extends TestCase {
 		return $result;
 	}
 
-    /**
-     * @depends testClientSecret
-     */
+	/**
+	 * @depends testClientSecret
+	 */
 	public function testTestMode($auth) {
 
 		$result = $auth->setTestMode(123);
@@ -52,9 +52,9 @@ class AuthorizationTest extends TestCase {
 		return $result;
 	}
 
-    /**
-     * @depends testTestMode
-     */
+	/**
+	 * @depends testTestMode
+	 */
 	public function testGetAccessToken($auth) {
 
 		// test successful executions with production env
@@ -72,11 +72,11 @@ class AuthorizationTest extends TestCase {
 		$this->assertSame("this_is_access_token", $accessToken); // Access token returned
 
 		// Check the url is taken for production environment
-		$url->verifyInvokedOnce('getUrl', [true]);
-		$url->verifyNeverInvoked('getUrl', [false]);
+		$url->verifyInvokedOnce("getUrl", [true]);
+		$url->verifyNeverInvoked("getUrl", [false]);
 
 		// Check request paramenters
-		$client->verifyInvokedOnce('request', [
+		$client->verifyInvokedOnce("request", [
 			"POST",
 			"some-url/connect/token",
 			[
@@ -103,7 +103,7 @@ class AuthorizationTest extends TestCase {
 		$this->assertSame('{"some_text":"text"}', $auth->getError());
 		$this->assertNull($accessToken);
 
-		$url->verifyInvokedOnce('getUrl', [false]);
+		$url->verifyInvokedOnce("getUrl", [false]);
 
 		// test error status code with error
 		$response->setStatusCode(100);
@@ -133,7 +133,7 @@ class AuthorizationTest extends TestCase {
 		$this->assertNull($accessToken);
 	}
 
-    protected function tearDown(): void {
+	protected function tearDown(): void {
 
 		test::clean(); // remove all registered test doubles
 	}

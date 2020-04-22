@@ -173,7 +173,7 @@ abstract class Transaction extends Request {
 		}
 
 		$customer = $this->getCustomer();
-		if ((!empty($customer)) && (!empty($customer->getEmail()))) {
+		if ((!empty($customer)) && (!$customer->isEmpty())) {
 			$result['customer'] = $customer;
 		}
 

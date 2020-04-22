@@ -32,10 +32,15 @@ class Customer implements \JsonSerializable {
 	 */
 	public function setEmail($email) {
 
+		if (!is_string($email)) {
+
+			return false;
+		}
+
 		$validator = new EmailValidator();
 		if (!$validator->isValid($email, new RFCValidation())) {
 
-			throw new Exception();
+			return false;
 		}
 
 		$this->email = $email;
@@ -62,7 +67,12 @@ class Customer implements \JsonSerializable {
 	 */
 	public function setPhone($phone) {
 
-		$this->phone = $phone;
+		if (!is_string($phone) && !is_int($phone)) {
+
+			return false;
+		}
+
+		$this->phone = (string) $phone; // Just in case if int is passed
 
 		return $this;
 	}
@@ -85,6 +95,11 @@ class Customer implements \JsonSerializable {
 	 * @return \ATDev\Viva\Transaction\Customer
 	 */
 	public function setFullName($fullName) {
+
+		if (!is_string($fullName)) {
+
+			return false;
+		}
 
 		$this->fullName = $fullName;
 
@@ -110,6 +125,11 @@ class Customer implements \JsonSerializable {
 	 */
 	public function setRequestLang($requestLang) {
 
+		if (!is_string($requestLang)) {
+
+			return false;
+		}
+
 		$this->requestLang = $requestLang;
 
 		return $this;
@@ -134,6 +154,11 @@ class Customer implements \JsonSerializable {
 	 */
 	public function setCountryCode($countryCode) {
 
+		if (!is_string($countryCode)) {
+
+			return false;
+		}
+
 		$this->countryCode = $countryCode;
 
 		return $this;
@@ -147,6 +172,16 @@ class Customer implements \JsonSerializable {
 	public function getCountryCode() {
 
 		return $this->countryCode;
+	}
+
+	/**
+	 * Check if object is empty
+	 *
+	 * @return bool
+	 */
+	public function isEmpty() {
+
+		return (empty($this->email) && empty($this->phone) && empty($this->fullName));
 	}
 
 	/**
