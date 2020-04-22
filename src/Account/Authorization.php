@@ -54,6 +54,11 @@ class Authorization {
 
 				$this->setError($result->error);
 			}
+
+			if (empty($this->getError())) {
+
+				$this->setError("An unknown error occured");
+			}
 		} else {
 
 			$this->setError(null);

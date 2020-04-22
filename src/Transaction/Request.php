@@ -32,7 +32,12 @@ abstract class Request implements \JsonSerializable {
 	 */
 	public function setSourceCode($sourceCode) {
 
-		$this->sourceCode = $sourceCode;
+		if (!is_string($sourceCode) && !is_int($sourceCode)) {
+
+			return false;
+		}
+
+		$this->sourceCode = (string) $sourceCode; // Just in case if int is passed
 
 		return $this;
 	}
@@ -55,6 +60,11 @@ abstract class Request implements \JsonSerializable {
 	 * @return \ATDev\Viva\Transaction\Request
 	 */
 	public function setAmount($amount) {
+
+		if (!is_int($amount)) {
+
+			return false;
+		}
 
 		$this->amount = $amount;
 
@@ -80,6 +90,11 @@ abstract class Request implements \JsonSerializable {
 	 */
 	public function setAccessToken($accessToken) {
 
+		if (!is_string($accessToken)) {
+
+			return false;
+		}
+
 		$this->accessToken = $accessToken;
 
 		return $this;
@@ -94,11 +109,21 @@ abstract class Request implements \JsonSerializable {
 
 		if (empty($this->accessToken)) {
 
-			$this->setAccessToken((new AccountAuthorization())
+			$auth = (new AccountAuthorization())
 				->setClientId($this->getClientId())
 				->setClientSecret($this->getClientSecret())
-				->setTestMode($this->getTestMode())
-				->getAccessToken());
+				->setTestMode($this->getTestMode());
+
+			$accessToken = $auth->getAccessToken();
+			$error = $auth->getError();
+
+			if (empty($error)) {
+
+				$this->setAccessToken($accessToken);
+			} else {
+
+				$this->setError($error);
+			}
 		}
 
 		return $this->accessToken;
@@ -110,6 +135,15 @@ abstract class Request implements \JsonSerializable {
 	 * @return stdClass
 	 */
 	public function send() {
+
+		// Check if access token available
+		if (empty($this->getAccessToken())) {
+
+			if (empty($this->getError())) {
+
+
+			}
+		}
 
 		$headers = [
 			"Authorization" => "Bearer " . $this->getAccessToken(),
@@ -147,9 +181,24 @@ abstract class Request implements \JsonSerializable {
 
 				$this->setError($result->message);
 			}
+
+			if (empty($this->getError())) {
+
+				$this->setError("An unknown error occured");
+			}
 		} else {
 
 			$this->setError(null);
+		}
+
+		if (!empty($this->getError())) {
+
+			return null;
+		}
+
+		if (empty($result->transactionId)) {
+
+			$this->setError("Transaction id is absent in response");
 		}
 
 		if (!empty($this->getError())) {

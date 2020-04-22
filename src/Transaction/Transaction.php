@@ -35,6 +35,11 @@ abstract class Transaction extends Request {
 	 */
 	public function setCustomer($customer) {
 
+		if (!($customer instanceof Customer)) {
+
+			return false;
+		}
+
 		$this->customer = $customer;
 
 		return $this;
@@ -58,6 +63,11 @@ abstract class Transaction extends Request {
 	 * @return \ATDev\Viva\Transaction\Transaction
 	 */
 	public function setChargeToken($chargeToken) {
+
+		if (!is_string($chargeToken)) {
+
+			return false;
+		}
 
 		$this->chargeToken = $chargeToken;
 
@@ -83,6 +93,11 @@ abstract class Transaction extends Request {
 	 */
 	public function setInstallments($installments) {
 
+		if (!is_int($installments)) {
+
+			return false;
+		}
+
 		$this->installments = $installments;
 
 		return $this;
@@ -107,6 +122,11 @@ abstract class Transaction extends Request {
 	 */
 	public function setMerchantTrns($merchantTrns) {
 
+		if (!is_string($merchantTrns)) {
+
+			return false;
+		}
+
 		$this->merchantTrns = $merchantTrns;
 
 		return $this;
@@ -130,6 +150,11 @@ abstract class Transaction extends Request {
 	 * @return \ATDev\Viva\Transaction\Transaction
 	 */
 	public function setCustomerTrns($customerTrns) {
+
+		if (!is_string($customerTrns)) {
+
+			return false;
+		}
 
 		$this->customerTrns = $customerTrns;
 

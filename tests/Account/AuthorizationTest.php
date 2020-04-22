@@ -114,6 +114,15 @@ class AuthorizationTest extends TestCase {
 		$this->assertSame("this is error text", $auth->getError());
 		$this->assertNull($accessToken);
 
+		// test error status code with empty response
+		$response->setStatusCode(310);
+		$response->setContents('');
+
+		$accessToken = $auth->getAccessToken();
+
+		$this->assertSame("An unknown error occured", $auth->getError());
+		$this->assertNull($accessToken);
+
 		// test success status code but no access token
 		$response->setStatusCode(200);
 		$response->setContents('{"no_access_token":"it_has_to_be_here"}');
