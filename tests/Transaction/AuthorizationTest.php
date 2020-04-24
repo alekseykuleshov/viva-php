@@ -241,9 +241,6 @@ class AuthorizationTest extends TestCase {
 		$this->assertSame('{"amount":1230,"preauth":true,"sourceCode":"1414","chargeToken":"qwe","installments":10,"merchantTrns":"yui","customerTrns":"rty","customer":[]}', json_encode($preAuth));
 	}
 
-	/**
-	 * @depends testAccessToken
-	 */
 	public function testSend() {
 
 		// Test no access token, error occured while getting it
@@ -265,7 +262,7 @@ class AuthorizationTest extends TestCase {
 		$this->assertEmpty($result);
 		$this->assertSame("Some error", $preAuth->getError());
 
-		// test successful executions with production env
+		// test successful execution with production env
 		$preAuth = (new Authorization())
 			->setClientId("asd")
 			->setClientSecret("zxc")
@@ -363,9 +360,6 @@ class AuthorizationTest extends TestCase {
 		$this->assertNull($result);
 	}
 
-	/**
-	 * @depends testCustomerTrns
-	 */
 	protected function tearDown(): void {
 
 		test::clean(); // remove all registered test doubles

@@ -20,6 +20,11 @@ class Cancel extends Request {
 	 */
 	public function setTransactionId($transactionId) {
 
+		if (!is_string($transactionId)) {
+
+			return false;
+		}
+
 		$this->transactionId = $transactionId;
 
 		return $this;

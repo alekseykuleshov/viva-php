@@ -241,9 +241,6 @@ class ChargeTest extends TestCase {
 		$this->assertSame('{"amount":1230,"preauth":false,"sourceCode":"1414","chargeToken":"qwe","installments":10,"merchantTrns":"yui","customerTrns":"rty","customer":[]}', json_encode($charge));
 	}
 
-	/**
-	 * @depends testAccessToken
-	 */
 	public function testSend() {
 
 		// Test no access token, error occured while getting it
@@ -265,7 +262,7 @@ class ChargeTest extends TestCase {
 		$this->assertEmpty($result);
 		$this->assertSame("Some error", $charge->getError());
 
-		// test successful executions with production env
+		// test successful execution with production env
 		$charge = (new Charge())
 			->setClientId("asd")
 			->setClientSecret("zxc")
@@ -363,9 +360,6 @@ class ChargeTest extends TestCase {
 		$this->assertNull($result);
 	}
 
-	/**
-	 * @depends testCustomerTrns
-	 */
 	protected function tearDown(): void {
 
 		test::clean(); // remove all registered test doubles

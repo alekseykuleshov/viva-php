@@ -5,22 +5,11 @@ Only 4 credit card transaction types are supported now: (Charge, Auth, Capture, 
 
 ## How to use
 
-This sdk is installed via [Composer](http://getcomposer.org/). To install, simply add it to your `composer.json` file:
+This library is installed via [Composer](http://getcomposer.org/). You will need to require `atdev/viva-php`:
 
-```json
-{
-    "require": {
-        "atdev/viva-php": "0.2.0"
-    }
-}
 ```
-
-And run composer to update your dependencies:
-
-    $ curl -s http://getcomposer.org/installer | php
-    $ php composer.phar update
-
-Then, import the `autoload.php` from your `vendor` folder.
+composer require atdev/viva-php:1.0.0
+```
 
 ## Prerequisites
 
