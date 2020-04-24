@@ -138,10 +138,9 @@ abstract class Request implements \JsonSerializable {
 
 		// Check if access token available
 		if (empty($this->getAccessToken())) {
+			if (!empty($this->getError())) {
 
-			if (empty($this->getError())) {
-
-
+				return null;
 			}
 		}
 

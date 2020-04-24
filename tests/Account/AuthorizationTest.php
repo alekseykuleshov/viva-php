@@ -87,7 +87,7 @@ class AuthorizationTest extends TestCase {
 				'headers' => [
 					"Authorization" => "Basic " . base64_encode("asd" . ":" . "zxc"),
 					"Accept" => "application/json",
-					"Content-Type" => "application/x-www-form-urlencoded",
+					"Content-Type" => "application/x-www-form-urlencoded"
 				]
 			]
 		]);

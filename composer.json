@@ -1,11 +1,12 @@
 {
     "name": "atdev/viva-php",
     "description": "Viva Wallet Native Checkout V2 API PHP Wrapper Library",
-    "keywords": ["viva", "wallet", "native", "checkout", "V2", "Api"],
+    "keywords": ["viva", "wallet", "payment", "native", "checkout", "V2", "api"],
     "homepage": "https://github.com/alekseykuleshov/viva-php",
     "license": "MIT",
     "minimum-stability": "stable",
     "require": {
+		"php": ">=5.6.0",
         "guzzlehttp/guzzle": "~6.0",
 		"egulias/email-validator": "~2.0"
     },

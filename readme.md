@@ -59,8 +59,8 @@ $transaction = (new ATDev\Viva\Transaction\Charge())
 	->setClientSecret("[Client Secret]") // Client Secret, Provided by wallet
 	->setTestMode("[Test Mode]") // Test mode, default is false, can be skipped
 	->setSourceCode("[Source Code]") // Source code, provided by wallet
-	->setAmount(["Amount"]) // The amount to charge in currency's smallest denomination (e.g amount in pounds x 100)
-	->setChargeToken(["Charge Token"]) // Charge token obtained at front end
+	->setAmount("[Amount]") // The amount to charge in currency's smallest denomination (e.g amount in pounds x 100)
+	->setChargeToken("[Charge Token]") // Charge token obtained at front end
 	->setCustomer($customer);
 
 $result = $transaction->send();
@@ -90,8 +90,8 @@ $transaction = (new ATDev\Viva\Transaction\Authorization())
 	->setClientSecret("[Client Secret]") // Client Secret, Provided by wallet
 	->setTestMode("[Test Mode]") // Test mode, default is false, can be skipped
 	->setSourceCode("[Source Code]") // Source code, provided by wallet
-	->setAmount(["Amount"]) // The amount to pre-auth in currency's smallest denomination (e.g amount in pounds x 100)
-	->setChargeToken(["Charge Token"]) // Charge token obtained at front end
+	->setAmount("[Amount]") // The amount to pre-auth in currency's smallest denomination (e.g amount in pounds x 100)
+	->setChargeToken("[Charge Token]") // Charge token obtained at front end
 	->setCustomer($customer);
 
 $result = $transaction->send();
@@ -117,8 +117,8 @@ $transaction = (new \ATDev\Viva\Transaction\Capture())
 	->setClientId("[Client ID]") // Client ID, Provided by wallet
 	->setClientSecret("[Client Secret]") // Client Secret, Provided by wallet
 	->setTestMode("[Test Mode]") // Test mode, default is false, can be skipped
-	->setTransactionId(["Transaction ID"]) // Transaction id of authorization transaction
-	->setAmount(["Amount"]); // The amount to capture in currency's smallest denomination (e.g amount in pounds x 100)
+	->setTransactionId("[Transaction ID]") // Transaction id of authorization transaction
+	->setAmount("[Amount]"); // The amount to capture in currency's smallest denomination (e.g amount in pounds x 100)
 
 $result = $transaction->send();
 
@@ -143,8 +143,8 @@ $transaction = (new \ATDev\Viva\Transaction\Cancel())
 	->setClientSecret("[Client Secret]") // Client Secret, Provided by wallet
 	->setTestMode("[Test Mode]") // Test mode, default is false, can be skipped
 	->setSourceCode("[Source Code]") // Source code, provided by wallet
-	->setTransactionId(["Transaction ID"]) // Transaction id of charge, authorization or capture transaction
-	->setAmount(["Amount"]); // The amount to refund in currency's smallest denomination (e.g amount in pounds x 100)
+	->setTransactionId("[Transaction ID]") // Transaction id of charge, authorization or capture transaction
+	->setAmount("[Amount]"); // The amount to refund in currency's smallest denomination (e.g amount in pounds x 100)
 
 $result = $transaction->send();
 
