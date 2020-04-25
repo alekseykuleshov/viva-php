@@ -224,6 +224,21 @@ class ChargeTokenTest extends TestCase {
 	/**
 	 * @depends testAccessToken
 	 */
+	public function testExpectedResult($chargeToken) {
+
+		$result = $chargeToken->setExpectedResult(1230);
+		$this->assertFalse($result);
+
+		$result = $chargeToken->setExpectedResult(["key" => "description"]);
+		$this->assertInstanceOf(ChargeToken::class, $result);
+		$this->assertSame(["key" => "description"], $result->getExpectedResult());
+
+		return $result;
+	}
+
+	/**
+	 * @depends testExpectedResult
+	 */
 	public function testJson($chargeToken) {
 
 		$this->assertSame('{"amount":1230,"cvc":"4321","number":"4321432143214321","holderName":"John Doe","expirationYear":2022,"expirationMonth":10,"sessionRedirectUrl":"https:\/\/example.com"}', json_encode($chargeToken));
@@ -259,7 +274,6 @@ class ChargeTokenTest extends TestCase {
 			->setClientId("asd")
 			->setClientSecret("zxc")
 			->setTestMode(true)
-			->setSourceCode("1414")
 			->setAmount(3000)
 			->setCvc(123)
 			->setNumber(4111111111111111)
@@ -348,7 +362,7 @@ class ChargeTokenTest extends TestCase {
 		$this->assertSame("Charge Token is absent in response", $chargeToken->getError());
 		$this->assertNull($result);
 
-		// test success status code but no charge token
+		// test success status code but no html to render
 		$response->setStatusCode(200);
 		$response->setContents('{"chargeToken":"it_is_here","no_redirectToACSForm":"it_has_to_be_here"}');
 
