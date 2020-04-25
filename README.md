@@ -48,7 +48,7 @@ $transaction = (new ATDev\Viva\Transaction\Charge())
 	->setTestMode("[Test Mode]") // Test mode, default is false, can be skipped
 	->setSourceCode("[Source Code]") // Source code, provided by wallet
 	->setAmount((int) "[Amount]") // The amount to charge in currency's smallest denomination (e.g amount in pounds x 100)
-	->setInstallments((int) "[Installments]") // Installments, can be skipped in not used
+	->setInstallments((int) "[Installments]") // Installments, can be skipped if not used
 	->setChargeToken("[Charge Token]") // Charge token obtained at front end
 	->setCustomer($customer);
 
@@ -80,7 +80,7 @@ $transaction = (new ATDev\Viva\Transaction\Authorization())
 	->setTestMode("[Test Mode]") // Test mode, default is false, can be skipped
 	->setSourceCode("[Source Code]") // Source code, provided by wallet
 	->setAmount((int) "[Amount]") // The amount to pre-auth in currency's smallest denomination (e.g amount in pounds x 100)
-	->setInstallments((int) "[Installments]") // Installments, can be skipped in not used
+	->setInstallments((int) "[Installments]") // Installments, can be skipped if not used
 	->setChargeToken("[Charge Token]") // Charge token obtained at front end
 	->setCustomer($customer);
 
