@@ -48,7 +48,8 @@ $transaction = (new ATDev\Viva\Transaction\Charge())
 	->setClientSecret("[Client Secret]") // Client Secret, Provided by wallet
 	->setTestMode("[Test Mode]") // Test mode, default is false, can be skipped
 	->setSourceCode("[Source Code]") // Source code, provided by wallet
-	->setAmount("[Amount]") // The amount to charge in currency's smallest denomination (e.g amount in pounds x 100)
+	->setAmount([Amount]) // The amount to charge in currency's smallest denomination (e.g amount in pounds x 100) *integer*
+	->setInstallments([Installments]) // Installments, can be skipped in not used *integer*
 	->setChargeToken("[Charge Token]") // Charge token obtained at front end
 	->setCustomer($customer);
 
@@ -79,7 +80,8 @@ $transaction = (new ATDev\Viva\Transaction\Authorization())
 	->setClientSecret("[Client Secret]") // Client Secret, Provided by wallet
 	->setTestMode("[Test Mode]") // Test mode, default is false, can be skipped
 	->setSourceCode("[Source Code]") // Source code, provided by wallet
-	->setAmount("[Amount]") // The amount to pre-auth in currency's smallest denomination (e.g amount in pounds x 100)
+	->setAmount([Amount]) // The amount to pre-auth in currency's smallest denomination (e.g amount in pounds x 100) *integer*
+	->setInstallments([Installments]) // Installments, can be skipped in not used *integer*
 	->setChargeToken("[Charge Token]") // Charge token obtained at front end
 	->setCustomer($customer);
 
@@ -107,7 +109,7 @@ $transaction = (new \ATDev\Viva\Transaction\Capture())
 	->setClientSecret("[Client Secret]") // Client Secret, Provided by wallet
 	->setTestMode("[Test Mode]") // Test mode, default is false, can be skipped
 	->setTransactionId("[Transaction ID]") // Transaction id of authorization transaction
-	->setAmount("[Amount]"); // The amount to capture in currency's smallest denomination (e.g amount in pounds x 100)
+	->setAmount([Amount]); // The amount to capture in currency's smallest denomination (e.g amount in pounds x 100) *integer*
 
 $result = $transaction->send();
 
@@ -133,7 +135,7 @@ $transaction = (new \ATDev\Viva\Transaction\Cancel())
 	->setTestMode("[Test Mode]") // Test mode, default is false, can be skipped
 	->setSourceCode("[Source Code]") // Source code, provided by wallet
 	->setTransactionId("[Transaction ID]") // Transaction id of charge, authorization or capture transaction
-	->setAmount("[Amount]"); // The amount to refund in currency's smallest denomination (e.g amount in pounds x 100)
+	->setAmount([Amount]); // The amount to refund in currency's smallest denomination (e.g amount in pounds x 100) *integer*
 
 $result = $transaction->send();
 
@@ -145,6 +147,37 @@ if (!empty($transaction->getError())) {
 
 	// Save transaction id
 	// $transactionId = $result->transactionId;
+}
+```
+
+## Get charge token at backend
+
+It's possible to get charge token at backend. It may be required in custom integration, more details can be found here: https://developer.vivawallet.com/online-checkouts/native-checkout-v2/
+
+```php
+$transaction = (new \ATDev\Viva\Transaction\ChargeToken())
+	->setClientId("[Client ID]") // Client ID, Provided by wallet
+	->setClientSecret("[Client Secret]") // Client Secret, Provided by wallet
+	->setTestMode("[Test Mode]") // Test mode, default is false, can be skipped
+	->setAmount([Amount]); // The amount to refund in currency's smallest denomination (e.g amount in pounds x 100) *integer*
+	->setCvc("[Cvc code]") // Card cvc code
+	->setNumber("[Card number]") // Card number
+	->setHolderName("[Holder name]") // Card holder name
+	->setExpirationYear([Expiration Year]) // Card expiration year
+	->setExpirationMonth([Expiration Month]) // Card expiration month
+	->setSessionRedirectUrl("[Session redirect url]"); // Url to redirect when authentication session finished
+
+$result = $transaction->send();
+
+if (!empty($transaction->getError())) {
+
+	// Log the error message
+	// $error = $transaction->getError();
+} else {
+
+	// Get charge token
+	// $chargeToken = $result->chargeToken;
+	// $redirectToACSForm = $result->redirectToACSForm;
 }
 ```
 

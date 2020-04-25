@@ -99,6 +99,6 @@ class Authorization {
 	 */
 	private function getApiUrl() {
 
-		return Url::getUrl($this->getTestMode()) . self::URI;
+		return Url::getUrl($this->getTestMode()) . static::URI;
 	}
 }

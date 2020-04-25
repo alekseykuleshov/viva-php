@@ -9,6 +9,7 @@ abstract class Request implements \JsonSerializable {
 
 	use \ATDev\Viva\Request;
 
+	/** @const string Uri to required api */
 	const URI = "/nativecheckout/v2/transactions";
 
 	/** @const string Request method, should be overridden in child classes */
@@ -22,6 +23,71 @@ abstract class Request implements \JsonSerializable {
 
 	/** @var string Access token to interact with transactions api */
 	private $accessToken;
+
+	/** @var string Additional headers to be sent */
+	private $headers = [];
+
+	/** @var string Expected result to be returned by api */
+	private $expectedResult = ["transactionId" => "Transaction id"];
+
+
+	/**
+	 * Set additional headers to be sent
+	 *
+	 * @param array $headers
+	 *
+	 * @return \ATDev\Viva\Transaction\Request
+	 */
+	public function setHeaders($headers) {
+
+		if (!is_array($headers)) {
+
+			return false;
+		}
+
+		$this->headers = $headers;
+
+		return $this;
+	}
+
+	/**
+	 * Gets headers
+	 *
+	 * @return array
+	 */
+	public function getHeaders() {
+
+		return $this->headers;
+	}
+
+	/**
+	 * Set expected result
+	 *
+	 * @param array $expectedResult
+	 *
+	 * @return \ATDev\Viva\Transaction\Request
+	 */
+	public function setExpectedResult($expectedResult) {
+
+		if (!is_array($expectedResult)) {
+
+			return false;
+		}
+
+		$this->expectedResult = $expectedResult;
+
+		return $this;
+	}
+
+	/**
+	 * Gets expected result
+	 *
+	 * @return array
+	 */
+	public function getExpectedResult() {
+
+		return $this->expectedResult;
+	}
 
 	/**
 	 * Set source code
@@ -149,6 +215,10 @@ abstract class Request implements \JsonSerializable {
 			"Accept" => "application/json"
 		];
 
+		if (!empty($this->getHeaders())) {
+			$headers = array_merge($headers, $this->getHeaders());
+		}
+
 		$request = [
 			"timeout" => 60,
 			"connect_timeout" => 60,
@@ -156,7 +226,7 @@ abstract class Request implements \JsonSerializable {
 			'headers' => $headers
 		];
 
-		if (static::METHOD != 'DELETE') {
+		if (!in_array(static::METHOD, ["DELETE", "GET"])) {
 			$request["json"] = $this;
 		}
 
@@ -195,9 +265,12 @@ abstract class Request implements \JsonSerializable {
 			return null;
 		}
 
-		if (empty($result->transactionId)) {
+		foreach ($this->getExpectedResult() as $key => $value) {
 
-			$this->setError("Transaction id is absent in response");
+			if (empty($result->{$key})) {
+
+				$this->setError($value . " is absent in response");
+			}
 		}
 
 		if (!empty($this->getError())) {
@@ -225,6 +298,6 @@ abstract class Request implements \JsonSerializable {
 	 */
 	protected function getApiUrl() {
 
-		return Url::getUrl($this->getTestMode()) . self::URI;
+		return Url::getUrl($this->getTestMode()) . static::URI;
 	}
 }
