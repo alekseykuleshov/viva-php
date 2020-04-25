@@ -159,12 +159,12 @@ $transaction = (new \ATDev\Viva\Transaction\ChargeToken())
 	->setClientId("[Client ID]") // Client ID, Provided by wallet
 	->setClientSecret("[Client Secret]") // Client Secret, Provided by wallet
 	->setTestMode("[Test Mode]") // Test mode, default is false, can be skipped
-	->setAmount([Amount]); // The amount to refund in currency's smallest denomination (e.g amount in pounds x 100) *integer*
+	->setAmount([Amount]); // The amount in currency's smallest denomination (e.g amount in pounds x 100) *integer*
 	->setCvc("[Cvc code]") // Card cvc code
 	->setNumber("[Card number]") // Card number
 	->setHolderName("[Holder name]") // Card holder name
-	->setExpirationYear([Expiration Year]) // Card expiration year
-	->setExpirationMonth([Expiration Month]) // Card expiration month
+	->setExpirationYear([Expiration Year]) // Card expiration year *integer*
+	->setExpirationMonth([Expiration Month]) // Card expiration month *integer*
 	->setSessionRedirectUrl("[Session redirect url]"); // Url to redirect when authentication session finished
 
 $result = $transaction->send();
@@ -178,6 +178,30 @@ if (!empty($transaction->getError())) {
 	// Get charge token
 	// $chargeToken = $result->chargeToken;
 	// $redirectToACSForm = $result->redirectToACSForm;
+}
+```
+
+## Check for installments
+
+Retrieve the maximum number of installments allowed on a card.
+
+```php
+$transaction = (new \ATDev\Viva\Transaction\Installments())
+	->setClientId("[Client ID]") // Client ID, Provided by wallet
+	->setClientSecret("[Client Secret]") // Client Secret, Provided by wallet
+	->setTestMode("[Test Mode]") // Test mode, default is false, can be skipped
+	->setNumber("[Card number]"); // Card number
+
+$result = $transaction->send();
+
+if (!empty($transaction->getError())) {
+
+	// Log the error message
+	// $error = $transaction->getError();
+} else {
+
+	// Get number of installments
+	// $installments = $result->maxInstallments;
 }
 ```
 

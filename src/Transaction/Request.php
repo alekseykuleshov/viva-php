@@ -267,7 +267,7 @@ abstract class Request implements \JsonSerializable {
 
 		foreach ($this->getExpectedResult() as $key => $value) {
 
-			if (empty($result->{$key})) {
+			if (!property_exists($result, $key)) {
 
 				$this->setError($value . " is absent in response");
 			}
