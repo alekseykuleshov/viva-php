@@ -47,8 +47,8 @@ $transaction = (new ATDev\Viva\Transaction\Charge())
 	->setClientSecret("[Client Secret]") // Client Secret, Provided by wallet
 	->setTestMode("[Test Mode]") // Test mode, default is false, can be skipped
 	->setSourceCode("[Source Code]") // Source code, provided by wallet
-	->setAmount([Amount]) // The amount to charge in currency's smallest denomination (e.g amount in pounds x 100) *integer*
-	->setInstallments([Installments]) // Installments, can be skipped in not used *integer*
+	->setAmount((int) "[Amount]") // The amount to charge in currency's smallest denomination (e.g amount in pounds x 100)
+	->setInstallments((int) "[Installments]") // Installments, can be skipped in not used
 	->setChargeToken("[Charge Token]") // Charge token obtained at front end
 	->setCustomer($customer);
 
@@ -79,8 +79,8 @@ $transaction = (new ATDev\Viva\Transaction\Authorization())
 	->setClientSecret("[Client Secret]") // Client Secret, Provided by wallet
 	->setTestMode("[Test Mode]") // Test mode, default is false, can be skipped
 	->setSourceCode("[Source Code]") // Source code, provided by wallet
-	->setAmount([Amount]) // The amount to pre-auth in currency's smallest denomination (e.g amount in pounds x 100) *integer*
-	->setInstallments([Installments]) // Installments, can be skipped in not used *integer*
+	->setAmount((int) "[Amount]") // The amount to pre-auth in currency's smallest denomination (e.g amount in pounds x 100)
+	->setInstallments((int) "[Installments]") // Installments, can be skipped in not used
 	->setChargeToken("[Charge Token]") // Charge token obtained at front end
 	->setCustomer($customer);
 
@@ -108,7 +108,7 @@ $transaction = (new \ATDev\Viva\Transaction\Capture())
 	->setClientSecret("[Client Secret]") // Client Secret, Provided by wallet
 	->setTestMode("[Test Mode]") // Test mode, default is false, can be skipped
 	->setTransactionId("[Transaction ID]") // Transaction id of authorization transaction
-	->setAmount([Amount]); // The amount to capture in currency's smallest denomination (e.g amount in pounds x 100) *integer*
+	->setAmount((int) "[Amount]"); // The amount to capture in currency's smallest denomination (e.g amount in pounds x 100)
 
 $result = $transaction->send();
 
@@ -134,7 +134,7 @@ $transaction = (new \ATDev\Viva\Transaction\Cancel())
 	->setTestMode("[Test Mode]") // Test mode, default is false, can be skipped
 	->setSourceCode("[Source Code]") // Source code, provided by wallet
 	->setTransactionId("[Transaction ID]") // Transaction id of charge, authorization or capture transaction
-	->setAmount([Amount]); // The amount to refund in currency's smallest denomination (e.g amount in pounds x 100) *integer*
+	->setAmount((int) "[Amount]"); // The amount to refund in currency's smallest denomination (e.g amount in pounds x 100)
 
 $result = $transaction->send();
 
@@ -158,12 +158,12 @@ $transaction = (new \ATDev\Viva\Transaction\ChargeToken())
 	->setClientId("[Client ID]") // Client ID, Provided by wallet
 	->setClientSecret("[Client Secret]") // Client Secret, Provided by wallet
 	->setTestMode("[Test Mode]") // Test mode, default is false, can be skipped
-	->setAmount([Amount]); // The amount in currency's smallest denomination (e.g amount in pounds x 100) *integer*
+	->setAmount((int) "[Amount]"); // The amount in currency's smallest denomination (e.g amount in pounds x 100)
 	->setCvc("[Cvc code]") // Card cvc code
 	->setNumber("[Card number]") // Card number
 	->setHolderName("[Holder name]") // Card holder name
-	->setExpirationYear([Expiration Year]) // Card expiration year *integer*
-	->setExpirationMonth([Expiration Month]) // Card expiration month *integer*
+	->setExpirationYear((int) "[Expiration Year]") // Card expiration year
+	->setExpirationMonth((int) "[Expiration Month]") // Card expiration month
 	->setSessionRedirectUrl("[Session redirect url]"); // Url to redirect when authentication session finished
 
 $result = $transaction->send();
