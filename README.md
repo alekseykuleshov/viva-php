@@ -1,7 +1,6 @@
 # Viva Wallet Native Checkout V2 API PHP Wrapper Library
 
-This is a wrapper for Native Checkout V2 API of Viva Wallet.
-Only 4 credit card transaction types are supported now: (Charge, Auth, Capture, Cancel).
+This is a wrapper for Native Checkout V2 API of Viva Wallet: https://developer.vivawallet.com/online-checkouts/native-checkout-v2/
 
 ## How to use
 
