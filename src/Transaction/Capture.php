@@ -6,7 +6,7 @@
 class Capture extends Request {
 
 	/** @const string Request method */
-	const METHOD = 'POST';
+	const METHOD = "POST";
 
 	/** @var string Transaction id to capture */
 	private $transactionId;
@@ -19,6 +19,11 @@ class Capture extends Request {
 	 * @return \ATDev\Viva\Transaction\Capture
 	 */
 	public function setTransactionId($transactionId) {
+
+		if (!is_string($transactionId)) {
+
+			return false;
+		}
 
 		$this->transactionId = $transactionId;
 

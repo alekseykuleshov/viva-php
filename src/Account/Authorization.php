@@ -8,10 +8,10 @@ class Authorization {
 	use \ATDev\Viva\Request;
 
 	/** @const string Uri to required api */
-	const URI = '/connect/token';
+	const URI = "/connect/token";
 
 	/** @const string Request method */
-	const METHOD = 'POST';
+	const METHOD = "POST";
 
 	/**
 	 * Gets access token
@@ -54,6 +54,11 @@ class Authorization {
 
 				$this->setError($result->error);
 			}
+
+			if (empty($this->getError())) {
+
+				$this->setError("An unknown error occured");
+			}
 		} else {
 
 			$this->setError(null);
@@ -94,6 +99,6 @@ class Authorization {
 	 */
 	private function getApiUrl() {
 
-		return Url::getUrl($this->getTestMode()) . self::URI;
+		return Url::getUrl($this->getTestMode()) . static::URI;
 	}
 }

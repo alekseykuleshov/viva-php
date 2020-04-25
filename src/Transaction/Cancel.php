@@ -6,7 +6,7 @@
 class Cancel extends Request {
 
 	/** @const string Request method */
-	const METHOD = 'DELETE';
+	const METHOD = "DELETE";
 
 	/** @var string Transaction id to cancel */
 	protected $transactionId;
@@ -19,6 +19,11 @@ class Cancel extends Request {
 	 * @return \ATDev\Viva\Transaction\Cancel
 	 */
 	public function setTransactionId($transactionId) {
+
+		if (!is_string($transactionId)) {
+
+			return false;
+		}
 
 		$this->transactionId = $transactionId;
 

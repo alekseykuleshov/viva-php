@@ -9,10 +9,11 @@ abstract class Request implements \JsonSerializable {
 
 	use \ATDev\Viva\Request;
 
-	const URI = '/nativecheckout/v2/transactions';
+	/** @const string Uri to required api */
+	const URI = "/nativecheckout/v2/transactions";
 
 	/** @const string Request method, should be overridden in child classes */
-	const METHOD = '';
+	const METHOD = "";
 
 	/** @var string Source code, provided by wallet */
 	private $sourceCode;
@@ -23,6 +24,71 @@ abstract class Request implements \JsonSerializable {
 	/** @var string Access token to interact with transactions api */
 	private $accessToken;
 
+	/** @var string Additional headers to be sent */
+	private $headers = [];
+
+	/** @var string Expected result to be returned by api */
+	private $expectedResult = ["transactionId" => "Transaction id"];
+
+
+	/**
+	 * Set additional headers to be sent
+	 *
+	 * @param array $headers
+	 *
+	 * @return \ATDev\Viva\Transaction\Request
+	 */
+	public function setHeaders($headers) {
+
+		if (!is_array($headers)) {
+
+			return false;
+		}
+
+		$this->headers = $headers;
+
+		return $this;
+	}
+
+	/**
+	 * Gets headers
+	 *
+	 * @return array
+	 */
+	public function getHeaders() {
+
+		return $this->headers;
+	}
+
+	/**
+	 * Set expected result
+	 *
+	 * @param array $expectedResult
+	 *
+	 * @return \ATDev\Viva\Transaction\Request
+	 */
+	public function setExpectedResult($expectedResult) {
+
+		if (!is_array($expectedResult)) {
+
+			return false;
+		}
+
+		$this->expectedResult = $expectedResult;
+
+		return $this;
+	}
+
+	/**
+	 * Gets expected result
+	 *
+	 * @return array
+	 */
+	public function getExpectedResult() {
+
+		return $this->expectedResult;
+	}
+
 	/**
 	 * Set source code
 	 *
@@ -32,7 +98,12 @@ abstract class Request implements \JsonSerializable {
 	 */
 	public function setSourceCode($sourceCode) {
 
-		$this->sourceCode = $sourceCode;
+		if (!is_string($sourceCode) && !is_int($sourceCode)) {
+
+			return false;
+		}
+
+		$this->sourceCode = (string) $sourceCode; // Just in case if int is passed
 
 		return $this;
 	}
@@ -55,6 +126,11 @@ abstract class Request implements \JsonSerializable {
 	 * @return \ATDev\Viva\Transaction\Request
 	 */
 	public function setAmount($amount) {
+
+		if (!is_int($amount)) {
+
+			return false;
+		}
 
 		$this->amount = $amount;
 
@@ -80,6 +156,11 @@ abstract class Request implements \JsonSerializable {
 	 */
 	public function setAccessToken($accessToken) {
 
+		if (!is_string($accessToken)) {
+
+			return false;
+		}
+
 		$this->accessToken = $accessToken;
 
 		return $this;
@@ -94,11 +175,21 @@ abstract class Request implements \JsonSerializable {
 
 		if (empty($this->accessToken)) {
 
-			$this->setAccessToken((new AccountAuthorization())
+			$auth = (new AccountAuthorization())
 				->setClientId($this->getClientId())
 				->setClientSecret($this->getClientSecret())
-				->setTestMode($this->getTestMode())
-				->getAccessToken());
+				->setTestMode($this->getTestMode());
+
+			$accessToken = $auth->getAccessToken();
+			$error = $auth->getError();
+
+			if (empty($error)) {
+
+				$this->setAccessToken($accessToken);
+			} else {
+
+				$this->setError($error);
+			}
 		}
 
 		return $this->accessToken;
@@ -111,10 +202,22 @@ abstract class Request implements \JsonSerializable {
 	 */
 	public function send() {
 
+		// Check if access token available
+		if (empty($this->getAccessToken())) {
+			if (!empty($this->getError())) {
+
+				return null;
+			}
+		}
+
 		$headers = [
 			"Authorization" => "Bearer " . $this->getAccessToken(),
 			"Accept" => "application/json"
 		];
+
+		if (!empty($this->getHeaders())) {
+			$headers = array_merge($headers, $this->getHeaders());
+		}
 
 		$request = [
 			"timeout" => 60,
@@ -123,7 +226,7 @@ abstract class Request implements \JsonSerializable {
 			'headers' => $headers
 		];
 
-		if (static::METHOD != 'DELETE') {
+		if (!in_array(static::METHOD, ["DELETE", "GET"])) {
 			$request["json"] = $this;
 		}
 
@@ -147,9 +250,28 @@ abstract class Request implements \JsonSerializable {
 
 				$this->setError($result->message);
 			}
+
+			if (empty($this->getError())) {
+
+				$this->setError("An unknown error occured");
+			}
 		} else {
 
 			$this->setError(null);
+		}
+
+		if (!empty($this->getError())) {
+
+			return null;
+		}
+
+		foreach ($this->getExpectedResult() as $key => $value) {
+
+			if (!is_object($result) || !property_exists($result, $key)) {
+
+				$this->setError($value . " is absent in response");
+				break;
+			}
 		}
 
 		if (!empty($this->getError())) {
@@ -177,6 +299,6 @@ abstract class Request implements \JsonSerializable {
 	 */
 	protected function getApiUrl() {
 
-		return Url::getUrl($this->getTestMode()) . self::URI;
+		return Url::getUrl($this->getTestMode()) . static::URI;
 	}
 }

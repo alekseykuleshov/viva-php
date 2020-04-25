@@ -8,7 +8,7 @@ use \ATDev\Viva\Url as BaseUrl;
 class Url extends BaseUrl {
 
 	/** @const Live api url */
-	const LIVE_URL = 'https://api.vivapayments.com';
+	const LIVE_URL = "https://api.vivapayments.com";
 	/** @const Test api url */
-	const TEST_URL = 'https://demo-api.vivapayments.com';
+	const TEST_URL = "https://demo-api.vivapayments.com";
 }
