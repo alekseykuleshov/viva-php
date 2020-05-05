@@ -84,7 +84,7 @@ class AuthorizationTest extends TestCase {
 				"timeout" => 60,
 				"connect_timeout" => 60,
 				"exceptions" => false,
-				'headers' => [
+				"headers" => [
 					"Authorization" => "Basic " . base64_encode("asd" . ":" . "zxc"),
 					"Accept" => "application/json",
 					"Content-Type" => "application/x-www-form-urlencoded"

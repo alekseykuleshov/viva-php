@@ -223,7 +223,7 @@ abstract class Request implements \JsonSerializable {
 			"timeout" => 60,
 			"connect_timeout" => 60,
 			"exceptions" => false,
-			'headers' => $headers
+			"headers" => $headers
 		];
 
 		if (!in_array(static::METHOD, ["DELETE", "GET"])) {

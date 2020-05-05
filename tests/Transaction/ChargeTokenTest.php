@@ -314,7 +314,7 @@ class ChargeTokenTest extends TestCase {
 				"timeout" => 60,
 				"connect_timeout" => 60,
 				"exceptions" => false,
-				'headers' => [
+				"headers" => [
 					"Authorization" => "Bearer access_token",
 					"Accept" => "application/json"
 				],

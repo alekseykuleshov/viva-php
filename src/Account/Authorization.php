@@ -31,7 +31,7 @@ class Authorization {
 			"timeout" => 60,
 			"connect_timeout" => 60,
 			"exceptions" => false,
-			'headers' => $headers
+			"headers" => $headers
 		];
 
 		$client = new \GuzzleHttp\Client();
