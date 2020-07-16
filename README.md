@@ -23,7 +23,7 @@ You'll need to have `Access Token` and `Base URL` at front end and you can get t
 ```php
 $baseUrl = \ATDev\Viva\Transaction\Url::getUrl("[Test Mode]"); // Test mode, default is false
 
-$accessToken = (new \ATDev\Viva\Transaction\Authorization())
+$accessToken = (new \ATDev\Viva\Account\Authorization())
 	->setClientId("[Client ID]") // Client ID, Provided by wallet
 	->setClientSecret("[Client Secret]") // Client Secret, Provided by wallet
 	->setTestMode("[Test Mode]") // Test mode, default is false, can be skipped
