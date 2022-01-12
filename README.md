@@ -1,6 +1,6 @@
 # Viva Wallet Native Checkout V2 API PHP Wrapper Library
 
-This is a wrapper for Native Checkout V2 API of Viva Wallet: https://developer.vivawallet.com/online-checkouts/native-checkout-v2/
+This is a wrapper for Native Checkout V2 API of Viva Wallet: https://developer.vivawallet.com/native-checkout-v2/
 
 ## How to use
 
@@ -12,12 +12,12 @@ composer require atdev/viva-php:~1.0
 
 ## Prerequisites
 
-Complete prerequisite steps from https://developer.vivawallet.com/online-checkouts/native-checkout-v2/ and obtain your `Client ID` and `Client Secret`.
+Complete prerequisite steps from https://developer.vivawallet.com/native-checkout-v2/ and obtain your `Client ID` and `Client Secret`.
 You'll need to set up a payment source with Native Checkout V2  as the integration method and get a `Source Code`.
 
 ## Get card charge token
 
-Create payment form and `Charge Token` at front end as described here: https://developer.vivawallet.com/online-checkouts/native-checkout-v2/
+Create payment form and `Charge Token` at front end as described here: https://developer.vivawallet.com/native-checkout-v2/
 You'll need to have `Access Token` and `Base URL` at front end and you can get them as follows:
 
 ```php
@@ -151,7 +151,7 @@ if (!empty($transaction->getError())) {
 
 ## Get charge token at backend
 
-It's possible to get charge token at backend. It may be required in custom integration, more details can be found here: https://developer.vivawallet.com/online-checkouts/native-checkout-v2/
+It's possible to get charge token at backend. It may be required in custom integration, more details can be found here: https://developer.vivawallet.com/native-checkout-v2/
 
 ```php
 $transaction = (new \ATDev\Viva\Transaction\ChargeToken())
